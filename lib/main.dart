@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+
+import 'combinatorics.dart';
+
 import 'package:flutter_math_fork/flutter_math.dart';
 
 void main() {
@@ -30,11 +33,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  Combinatoric combinatoric = Combinatoric();
 
-  void _incrementCounter() {
+  void _reloadQuestion() {
     setState(() {
-      _counter++;
+      combinatoric = Combinatoric();
     });
   }
 
@@ -48,21 +51,18 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Math.tex(
+              combinatoric.question,
+              textScaleFactor: 4,
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            Math.tex(r'\frac a b'),
+            Text(combinatoric.answer.toString()),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: _reloadQuestion,
+        tooltip: 'Reload question',
+        child: const Icon(Icons.restart_alt),
       ),
     );
   }
