@@ -7,7 +7,7 @@ class Combinatoric {
 
   Combinatoric() {
     final rng = Random();
-    final n = rng.nextInt(9) + 1;
+    final n = rng.nextInt(9) + 2;
     final r = rng.nextInt(n - 1) + 1;
     question = '{}^{$n}C_{$r}';
     answer = _factorial(n) ~/ (_factorial(r) * _factorial(n - r));
