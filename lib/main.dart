@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:advanced_higher_maths/bridge_generated.dart';
+import 'package:advanced_higher_maths/ffi.dart';
 import 'combinatorics.dart';
 
 import 'package:flutter_math_fork/flutter_math.dart';
@@ -34,10 +36,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   Combinatoric combinatoric = Combinatoric();
+  String text = '';
 
-  void _reloadQuestion() {
+  void _reloadQuestion() async {
+    combinatoric = Combinatoric();
+    final answer = combinatoric.answer;
+    final result = await api.square(n: answer);
+
     setState(() {
-      combinatoric = Combinatoric();
+      text = result.toString();
     });
   }
 
@@ -56,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
               textScaleFactor: 4,
             ),
             Text(combinatoric.answer.toString()),
+            Text('The square is $text'),
           ],
         ),
       ),
