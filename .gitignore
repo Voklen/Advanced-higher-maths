@@ -45,3 +45,7 @@ app.*.map.json
 
 # Rust
 /rust/target/
+
+# Flutter-rust bridge
+**/bridge_generated.*
+**/bridge_definitions.*
