@@ -7,7 +7,7 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge.dart';
 
-abstract class Native {
+abstract class RustBackend {
   Future<int> square({required int n, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kSquareConstMeta;
