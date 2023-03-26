@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:advanced_higher_maths/bridge_generated.dart';
 import 'package:advanced_higher_maths/ffi.dart';
-import 'combinatorics.dart';
 
 import 'package:flutter_math_fork/flutter_math.dart';
 
@@ -35,16 +33,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  Combinatoric combinatoric = Combinatoric();
-  String text = '';
+  Future<Question> combinatoric = api.combinatoric();
 
   void _reloadQuestion() async {
-    combinatoric = Combinatoric();
-    final answer = combinatoric.answer;
-    final result = await api.square(n: answer);
-
     setState(() {
-      text = result.toString();
+      combinatoric = api.combinatoric();
     });
   }
 
@@ -55,16 +48,24 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Math.tex(
-              combinatoric.question,
-              textScaleFactor: 4,
-            ),
-            Text(combinatoric.answer.toString()),
-            Text('The square is $text'),
-          ],
+        child: FutureBuilder(
+          future: combinatoric,
+          builder: (context, snapshot) {
+            final question = snapshot.data;
+            if (question == null) {
+              return Container();
+            }
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Math.tex(
+                  question.prompt,
+                  textScaleFactor: 4,
+                ),
+                Text(question.answer),
+              ],
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(

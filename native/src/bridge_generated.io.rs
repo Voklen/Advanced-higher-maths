@@ -6,6 +6,11 @@ pub extern "C" fn wire_square(port_: i64, n: u32) {
     wire_square_impl(port_, n)
 }
 
+#[no_mangle]
+pub extern "C" fn wire_combinatoric(port_: i64) {
+    wire_combinatoric_impl(port_)
+}
+
 // Section: allocate functions
 
 // Section: related functions

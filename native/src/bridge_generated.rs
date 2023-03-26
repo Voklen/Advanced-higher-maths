@@ -34,6 +34,16 @@ fn wire_square_impl(port_: MessagePort, n: impl Wire2Api<u32> + UnwindSafe) {
         },
     )
 }
+fn wire_combinatoric_impl(port_: MessagePort) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap(
+        WrapInfo {
+            debug_name: "combinatoric",
+            port: Some(port_),
+            mode: FfiCallMode::Normal,
+        },
+        move || move |task_callback| Ok(combinatoric()),
+    )
+}
 // Section: wrapper structs
 
 // Section: static checks
@@ -62,6 +72,13 @@ impl Wire2Api<u32> for u32 {
     }
 }
 // Section: impl IntoDart
+
+impl support::IntoDart for Question {
+    fn into_dart(self) -> support::DartAbi {
+        vec![self.prompt.into_dart(), self.answer.into_dart()].into_dart()
+    }
+}
+impl support::IntoDartExceptPrimitive for Question {}
 
 // Section: executor
 

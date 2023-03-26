@@ -41,13 +41,51 @@ class NativeImpl implements Native {
         argNames: ["n"],
       );
 
+  Future<Question> combinatoric({dynamic hint}) {
+    return _platform.executeNormal(FlutterRustBridgeTask(
+      callFfi: (port_) => _platform.inner.wire_combinatoric(port_),
+      parseSuccessData: _wire2api_question,
+      constMeta: kCombinatoricConstMeta,
+      argValues: [],
+      hint: hint,
+    ));
+  }
+
+  FlutterRustBridgeTaskConstMeta get kCombinatoricConstMeta =>
+      const FlutterRustBridgeTaskConstMeta(
+        debugName: "combinatoric",
+        argNames: [],
+      );
+
   void dispose() {
     _platform.dispose();
   }
 // Section: wire2api
 
+  String _wire2api_String(dynamic raw) {
+    return raw as String;
+  }
+
+  Question _wire2api_question(dynamic raw) {
+    final arr = raw as List<dynamic>;
+    if (arr.length != 2)
+      throw Exception('unexpected arr length: expect 2 but see ${arr.length}');
+    return Question(
+      prompt: _wire2api_String(arr[0]),
+      answer: _wire2api_String(arr[1]),
+    );
+  }
+
   int _wire2api_u32(dynamic raw) {
     return raw as int;
+  }
+
+  int _wire2api_u8(dynamic raw) {
+    return raw as int;
+  }
+
+  Uint8List _wire2api_uint_8_list(dynamic raw) {
+    return raw as Uint8List;
   }
 }
 
@@ -180,6 +218,20 @@ class NativeWire implements FlutterRustBridgeWireBase {
           'wire_square');
   late final _wire_square =
       _wire_squarePtr.asFunction<void Function(int, int)>();
+
+  void wire_combinatoric(
+    int port_,
+  ) {
+    return _wire_combinatoric(
+      port_,
+    );
+  }
+
+  late final _wire_combinatoricPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64)>>(
+          'wire_combinatoric');
+  late final _wire_combinatoric =
+      _wire_combinatoricPtr.asFunction<void Function(int)>();
 
   void free_WireSyncReturn(
     WireSyncReturn ptr,

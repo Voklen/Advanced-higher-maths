@@ -11,4 +11,18 @@ abstract class Native {
   Future<int> square({required int n, dynamic hint});
 
   FlutterRustBridgeTaskConstMeta get kSquareConstMeta;
+
+  Future<Question> combinatoric({dynamic hint});
+
+  FlutterRustBridgeTaskConstMeta get kCombinatoricConstMeta;
+}
+
+class Question {
+  final String prompt;
+  final String answer;
+
+  Question({
+    required this.prompt,
+    required this.answer,
+  });
 }
