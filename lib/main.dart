@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import 'package:advanced_higher_maths/ffi.dart';
@@ -33,11 +35,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<Future<Question> Function()> allQuestions = [
+    api.combinatoric,
+    api.algebraicExpansion
+  ];
+  final random = Random();
   Future<Question> combinatoric = api.combinatoric();
 
   void _reloadQuestion() async {
+    final nextQuestion = allQuestions[random.nextInt(allQuestions.length)];
     setState(() {
-      combinatoric = api.combinatoric();
+      combinatoric = nextQuestion();
     });
   }
 
@@ -62,7 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   question.prompt,
                   textScaleFactor: 4,
                 ),
-                Text(question.answer),
+                Math.tex(
+                  question.answer,
+                ),
               ],
             );
           },
