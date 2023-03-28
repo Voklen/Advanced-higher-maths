@@ -40,12 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
     api.algebraicExpansion
   ];
   final random = Random();
-  Future<Question> combinatoric = api.combinatoric();
+  Future<Question> currentQuestion = api.combinatoric();
 
   void _reloadQuestion() async {
     final nextQuestion = allQuestions[random.nextInt(allQuestions.length)];
     setState(() {
-      combinatoric = nextQuestion();
+      currentQuestion = nextQuestion();
     });
   }
 
@@ -57,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: FutureBuilder(
-          future: combinatoric,
+          future: currentQuestion,
           builder: (context, snapshot) {
             final question = snapshot.data;
             if (question == null) {
