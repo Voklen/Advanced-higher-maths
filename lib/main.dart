@@ -37,7 +37,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final List<Future<Question> Function()> allQuestions = [
     api.combinatoric,
-    api.algebraicExpansion
+    api.algebraicExpansion,
+    api.particularTerm,
   ];
   final random = Random();
   Future<Question> currentQuestion = api.combinatoric();
@@ -68,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Math.tex(
                   question.prompt,
-                  textScaleFactor: 4,
+                  // textScaleFactor: 4,
                 ),
                 Math.tex(
                   question.answer,
