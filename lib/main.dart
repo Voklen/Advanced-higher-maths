@@ -16,11 +16,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Advanced higher maths',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Advanced higher maths'),
     );
   }
 }
@@ -67,9 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 5),
+                  child: Text('Prompt:'),
+                ),
                 Math.tex(
                   question.prompt,
-                  // textScaleFactor: 4,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 40, bottom: 5),
+                  child: Text('Answer:'),
                 ),
                 Math.tex(
                   question.answer,
