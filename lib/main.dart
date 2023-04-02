@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Future<Question> Function()> allQuestions = [
     api.combinatoric,
     api.algebraicExpansion,
-    api.particularTerm,
+    api.generalTerm,
   ];
   final random = Random();
   Future<Question> currentQuestion = api.combinatoric();

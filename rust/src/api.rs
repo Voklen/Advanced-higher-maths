@@ -103,47 +103,35 @@ impl Item {
 	}
 }
 
-struct PoweredNum {
-	pub number: i64,
-	pub exponent: i64,
-}
-
-pub fn particular_term() -> Question {
+pub fn general_term() -> Question {
 	let term1 = Item::standard("x");
 	let term2 = Item::standard("y");
 	let power = rand::thread_rng().gen_range(3..=8);
 	let expansion_as_latex = format!("({} + {})^{power}", term1.as_LaTeX(), term2.as_LaTeX());
 
-	let var_answer = calculate_particular_term_var(term1, term2, power);
-	let prompt = format!(
-		"\\textbf{{Find the coefficient of }} {var_answer} \\textbf{{ in the expansion of}} {expansion_as_latex}"
-	);
-	Question {
-		prompt,
-		answer: "".into(),
-	}
+	let choose_answer = format!("{{{power} \\choose r}}");
+	let num_answer = calculate_general_term_num(&term1, &term2, power);
+	let var_answer = calculate_general_term_var(term1, term2, power);
+	let answer = format!("{choose_answer}{var_answer}{num_answer}");
+	let prompt =
+		format!("\\textbf{{Find the general term in the expansion of }} {expansion_as_latex}");
+	Question { prompt, answer }
 }
-fn calculate_particular_term_var(term1: Item, term2: Item, expo: i64) -> String {
-	let num1 = PoweredNum {
-		number: term1.multiply,
-		exponent: expo,
-	};
-	let num2 = PoweredNum {
-		number: term2.multiply,
-		exponent: expo,
-	};
+fn calculate_general_term_var(term1: Item, term2: Item, expo: i64) -> String {
 	// x^(expo1_multiply(expo1_sub - r))
 	let expo1_sub = expo;
 	let expo1_multiply = term1.expo;
 	// x^(expo1_sub - r*expo1_multiply)
 	let expo1_sub = expo1_sub * expo1_multiply;
+	// x^(expo1_sub + r*expo1_multiply)
+	let expo1_multiply = term1.expo * -1;
 
 	// x^(expo2_multiply * r)
 	let expo2_multiply = term2.expo;
 
 	if term1.var_name == term2.var_name {
 		let var_name = term1.var_name;
-		let expo_multiply = expo1_multiply * expo2_multiply;
+		let expo_multiply = expo1_multiply * expo2_multiply * -1;
 		let expo_string = add_and_format(expo1_sub, expo_multiply, &var_name);
 		format!("{var_name}^{{{expo_string}}}")
 	} else {
@@ -154,6 +142,34 @@ fn calculate_particular_term_var(term1: Item, term2: Item, expo: i64) -> String 
 		let var2_name = term2.var_name;
 		let var2_string = format!("{var2_name}^{{{expo2_multiply}r}}");
 		format!("{var1_string}{var2_string}")
+	}
+}
+fn calculate_general_term_num(term1: &Item, term2: &Item, expo: i64) -> String {
+	if term1.multiply == term2.multiply {
+		let multiply = term1.multiply;
+		return format!("{multiply}^{{{expo}}}");
+	}
+
+	let num1 = term1.multiply;
+	let num2 = term2.multiply;
+
+	format!("({num1})^{{{expo}-r}}({num2})^{{r}}")
+}
+
+/// This is currently unfinished
+pub fn particular_term_coefficient() -> Question {
+	let term1 = Item::standard("x");
+	let term2 = Item::standard("y");
+	let power = rand::thread_rng().gen_range(3..=8);
+	let expansion_as_latex = format!("({} + {})^{power}", term1.as_LaTeX(), term2.as_LaTeX());
+
+	let var_answer = calculate_general_term_var(term1, term2, power);
+	let prompt = format!(
+		"\\textbf{{Find the coefficient of }} {var_answer} \\textbf{{ in the expansion of}} {expansion_as_latex}"
+	);
+	Question {
+		prompt,
+		answer: "".into(),
 	}
 }
 
